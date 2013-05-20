@@ -1,0 +1,45 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+sub usage {
+    print <<EOF;
+Usage: $0 CHECK1 [CHECK2 ...]
+
+Run multiple checks and return the best observed status. This is useful for,
+as an example, monitoring a service where the process may have one of
+several names.
+
+The full command line for each check should be specified as its own argument.
+Normal shell quoting rules apply.
+
+EXAMPLE:
+
+    $0 "check_procs -c 1: -C vmware-guestd" \\
+        "check_procs -c 1: -C vmtoolsd"
+
+EOF
+    exit 1;
+}
+
+my $best_status = 4;
+my $best_output = '';
+
+if (scalar @ARGV == 0) {
+    usage;
+} else {
+    foreach my $checkcmd (@ARGV) {
+        my $output = `$checkcmd`;
+        my $status = $?;
+
+        if ($status < $best_status) {
+            $best_status = $status;
+            $best_output = $output;
+        }
+    }
+}
+
+print $best_output;
+exit $best_status;
+
