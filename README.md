@@ -11,3 +11,6 @@ names. Simply run both process checks without caring which one works.
 
     -> PROCS OK: 1 process with command name 'vmtoolsd'
 
+### License
+
+This plugin is released under public domain.
