@@ -31,7 +31,7 @@ if (scalar @ARGV == 0) {
 } else {
     foreach my $checkcmd (@ARGV) {
         my $output = `$checkcmd`;
-        my $status = $?;
+        my $status = $? >> 8;
 
         if ($status < $best_status) {
             $best_status = $status;
